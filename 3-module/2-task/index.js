@@ -5,5 +5,5 @@ function filterRange(arr, a, b) {
           newArr.push(arr[i]);
       }
   }
-  return result;
+  return newArr;
 }
