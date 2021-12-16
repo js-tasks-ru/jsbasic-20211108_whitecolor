@@ -12,81 +12,43 @@
  *      }
  *
  */
-export default class UserTable {
-  #rows;
-  #elem;
-  static #tables = [];
-
+ export default class UserTable {
   constructor(rows) {
-      this.#rows = rows;
-      this.#elem = document.createElement("table");
-      this.makeHTML();
-
-      this.#elem.dataset.tindex = UserTable.#tables.length; // Индекс своего экземпляра в хранилище
-      UserTable.#tables.push(this); // Сохранить экземпляр для взаимодействия с обработчиком
-  }
-  get elem() {
-      return this.#elem;
-  }
-  makeHTML() {
-      let s = `      
-      <thead>
-      <tr>
-          <th>Имя</th>
-          <th>Возраст</th>
-          <th>Зарплата</th>
-          <th>Город</th>
-          <th></th>
-      </tr>
-      </thead>
-      <tbody>` + this.#rows.map(e => `
-      <tr>
-          <td>${e.name}</td>
-          <td>${e.age}</td>
-          <td>${e.salary}</td>
-          <td>${e.city}</td>
-          <td><button>X</button></td>
-      </tr>              
-              `).join("") + `</tbody>`;
-      this.#elem.innerHTML = s;
-      for (let b of this.#elem.querySelectorAll("button"))
-          b.addEventListener("click", UserTable.handler);
-  }
-
-  static handler(event) {
-      let row = this.parentElement.parentElement;
-      let that = UserTable.#tables[+row.parentElement.parentElement.dataset.tindex];
-      that.#rows.splice(row.rowIndex - 1, 1);
-      row.remove();
+  this.elem = deleteRows(rows)
   }
 }
-
-let rows = [
-  {
-      name: 'Ilia',
-      age: 25,
-      salary: 1000,
-      city: 'Petrozavodsk'
-  },
-  {
-      name: 'Vasya',
-      age: 14,
-      salary: 1500,
-      city: 'Moscow'
-  },
-  {
-      name: 'Ivan',
-      age: 22,
-      salary: 100,
-      city: 'Bryansk'
-  },
-  {
-      name: 'Petya',
-      age: 45,
-      salary: 990,
-      city: 'Chita'
+function createTable(obj) {
+  return `
+  <tr>
+  <td>${obj.name}</td>
+  <td>${obj.age}</td>
+  <td>${obj.salary}</td>
+  <td>${obj.city}</td>
+  <td><button>X</button></td>
+</tr>
+  `
+}
+function makeHTML(array){
+  return `
+  <thead>
+        <tr>
+            <th>Имя</th>
+            <th>Возраст</th>
+            <th>Зарплата</th>
+            <th>Город</th>
+        </tr>
+    </thead>
+    <tbody>
+        ${array.map(createTable).join('')}
+    </tbody>`
+}
+function deleteRows(array){
+  const table = document.createElement("table");
+  table.innerHTML = makeHTML(array);
+  const buttons = table.querySelectorAll("button")
+  for (const button of buttons){
+    button.addEventListener('click', (event) =>
+    event.target.closest("tr").remove())
   }
-];
-
-let table = new UserTable(rows);
-document.body.append(table.elem);
+  return table;
+}
