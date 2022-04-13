@@ -1,8 +1,35 @@
-td {
-    border: 1px solid black;
-    padding: 6px;
+table {
+    border-collapse: collapse;
+    width: fit-content;
 }
 
-table { 
-    border-collapse: collapse; 
+td,
+th {
+    border: 1px solid #000;
+    padding: 3px 8px;
+}
+
+td:nth-child(2),
+td:nth-child(3) {
+    text-align: right;
+}
+
+th:nth-child(1) {
+    width: 100px;
+}
+
+th:nth-child(2) {
+    width: 50px;
+}
+
+th:nth-child(3) {
+    width: 50px;
+}
+
+th:nth-child(4) {
+    width: 120px;
+}
+
+th:nth-child(5) {
+    width: 20px;
 }
